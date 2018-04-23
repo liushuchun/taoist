@@ -5,22 +5,23 @@
 
 namespace  cnn{
     struct ParameterLine:public Line{
-        ParameterLine(const Tensor& d):tensor(t),values(Random(t)){}
+        ParameterLine(const Tensor& t):tensor(t),values(Random(t)){}
         std::string to_string(const std::vector<std::string>& arg_names)const override;
         Matrix forward(const std::vector<const Matrix*>& xs) const override ;
         Matrix backward(const std::vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf,unsigned  i) const override;
-        inline real& operator()(int i,int j)const{return values(i,j);}
+        inline real& operator()(int i,int j)  {return values(i,j);}
+        inline const real& operator()(int i,int j) const  {return values(i,j);}
         Tensor tensor;
         Matrix values;
     };
 
-    struct InLine:public Line{
-        InLine(const Tensor& t):tensor(t),values(Zero(t)){}
+    struct InputLine:public Line{
+        InputLine(const Tensor& t):tensor(t),values(Zero(t)){}
         std::string to_string(const std::vector<std::string>& names)const override;
         Matrix forward(const std::vector<const Matrix*>& xs) const override;
         Matrix backward(const std::vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf, unsigned i) const override;
         inline real& operator()(int i,int j){return values(i,j);}
-        linline const real& operator()(int i,int j)const{return values(i,j);}
+        inline const real& operator()(int i,int j) const {return values(i,j);}
         Tensor tensor;
         Matrix values;
     };
@@ -59,16 +60,16 @@ namespace  cnn{
         string to_string(const vector<string>& names) const{
             ostringstream s;
             s<<names[0];
-            for(unsigned i=1;i<tail.size(),++i){
+            for(unsigned i=1;i<tail.size();++i){
                 s<<" + "<<names[1];
             }
             return s.str();
         }
 
         Matrix forward(const vector<const Matrix*>& xs) const{
-            assert(x.size()>1);
+            assert(xs.size()>1);
             Matrix res=*xs[0];
-            for(unsigned i=1;i<x.size();++i){
+            for(unsigned i=1;i<xs.size();++i){
                 res+=*xs[i];
             }
             return res;
@@ -144,7 +145,7 @@ namespace  cnn{
     };
 
 
-    struct Tanh:public line{
+    struct Tanh:public Line{
         //y=tanh x_1
         string to_string(const vector<string>& names) const{
             ostringstream s;
@@ -154,7 +155,7 @@ namespace  cnn{
 
         Matrix forward(const vector<const Matrix*>& xs) const{
             assert(xs.size()==1);
-            const Matrix& x=&xs.front();
+            const Matrix& x=*xs.front();
             const unsigned rows=x.rows();
             const unsigned cols=x.cols();
             Matrix fx(rows,cols);
@@ -197,9 +198,9 @@ namespace  cnn{
             return x.cwiseProduct(x);
         }
 
-        Matrix backward(const vectorM<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf,unsigned i) const override{
+        Matrix backward(const vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf,unsigned i) const override{
             assert(i==0);
-            return dedf,cwiseProduct(*xs.front())*2;
+            return dedf.cwiseProduct(*xs.front())*2;
         }
 
     };

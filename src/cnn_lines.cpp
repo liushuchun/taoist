@@ -17,7 +17,7 @@ namespace cnn{
     }
 
     Matrix ParameterLine::forward(const std::vector<const Matrix *> &xs) const {
-        assert(x.size()==0);
+        assert(xs.size()==0);
         return values;
     }
 
@@ -25,18 +25,18 @@ namespace cnn{
         return Matrix();
     }
 
-    string InLine::to_string(const std::vector<std::string> &names) const {
+    string InputLine::to_string(const std::vector<std::string> &names) const {
         ostringstream s;
         s<<"inputs"<<tensor;
         return s.str();
     }
 
-    Matrix InLine::forward(const std::vector<const Matrix *> &xs) const {
+    Matrix InputLine::forward(const std::vector<const Matrix *> &xs) const {
         assert(xs.size()==0);
         return values;
     }
 
-    Matrix InLine::backward(const std::vector<const Matrix *> &xs, const Matrix &fx, const Matrix &dedf,
+    Matrix InputLine::backward(const std::vector<const Matrix *> &xs, const Matrix &fx, const Matrix &dedf,
                             unsigned i) const {
         return Matrix();
     }

@@ -142,9 +142,7 @@ namespace cnn{
 }
 
 
-
-
-
+#endif
 
 
 

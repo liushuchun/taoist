@@ -12,7 +12,7 @@ namespace cnn{
 
     Graph::~Graph() {
         for (auto l:lines) delete l;
-        for (auto p:points) delete n;
+        for (auto p:points) delete p;
     }
 
     unsigned Graph::add_parameter(const Tensor &d, const std::string &name) {
@@ -27,7 +27,7 @@ namespace cnn{
     unsigned Graph::add_input(const Tensor &d, const std::string &name) {
         unsigned new_point_index=points.size();
         points.push_back(new Point(lines.size(),name));
-        lines.push_back(new InLine(d));
+        lines.push_back(new InputLine(d));
         lines.back()->head_point=new_point_index;
         return new_point_index;
     }
@@ -62,8 +62,8 @@ namespace cnn{
                 ++ti;
             }
             for(unsigned ti=0;ti<in_line.tail.size();++ti){
-                Point& tail_point=*nodes[in_line.tail[ti]];
-                tail_point.dedf+=in_line.backward(xs,point.f,point.dedf,ti);
+                Point& tail_point=*points[in_line.tail[ti]];
+                tail_point.dedf+=in_line.backward(xs,p.f,p.dedf,ti);
             }
         }
     }
