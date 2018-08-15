@@ -40,11 +40,6 @@ namespace  cnn{
             return (*xs[0])*(*xs[1]);
         }
 
-        Matrix backward(const std::vector<const Matrix*>& xs) const{
-            assert(xs.size()==2);
-            return (*xs[0])*(*xs[1]);
-        }
-
 
         Matrix backward(const std::vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf, unsigned i) const override {
             assert(i<2);
@@ -60,7 +55,7 @@ namespace  cnn{
         string to_string(const vector<string>& names) const{
             ostringstream s;
             s<<names[0];
-            for(unsigned i=1;i<tail.size();++i){
+            for(auto i=1;i<tail.size();++i){
                 s<<" + "<<names[1];
             }
             return s.str();
@@ -198,9 +193,10 @@ namespace  cnn{
             return x.cwiseProduct(x);
         }
 
-        Matrix backward(const vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf,unsigned i) const override{
+        Matrix backward(const vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dedf,unsigned i) const override {
             assert(i==0);
-            return dedf.cwiseProduct(*xs.front())*2;
+            const Matrix val=*xs.front();
+            return dedf.cwiseProduct(val)*2;
         }
 
     };

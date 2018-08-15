@@ -67,4 +67,31 @@ namespace cnn{
             }
         }
     }
+
+
+    void Graph::PrintGraph() const {
+        cerr<<"graph G{\n rankdir=LR;\n nodesep=.05;\n";
+        unsigned nc=0;
+        for(auto point:points) {
+            vector<string> var_names;
+            const Line *in_line = lines[point->in_line];
+            for (auto tail_point:in_line->tail) {
+                var_names.push_back(points[tail_point]->variable_name());
+            }
+            cerr << " N" << nc << " [label=\"" << point->variable_name() << " = " << in_line->to_string(var_names)
+                 << "\"];\n";
+            ++nc;
+
+        }
+
+            for(auto line:lines){
+                for(auto ni:line->tail){
+                    cerr<<" N"<<ni<<" ->N"<<line->head_point<<";\n";
+                }
+
+            }
+            cerr<<"}\n";
+
+    }
+
 }

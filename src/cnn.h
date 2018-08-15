@@ -43,7 +43,8 @@ namespace cnn{
 
     inline Matrix Zero(const Tensor& d){return Matrix::Zero(d.rows,d.cols);}
 
-    inline Matrix Random(const Tensor& d){return Matrix::Random(d.rows,d.cols)*0.08;}
+    inline Matrix Random(const Tensor& d){return Matrix::Random(d.rows,d.cols);}
+
 
     struct Line;
 
@@ -111,7 +112,7 @@ namespace cnn{
         //computation
         virtual Matrix forward(const std::vector<const Matrix*>& xs) const=0;
         // computes the derivative of E with respect to the ith argument to f,that is,xs[i]
-        virtual Matrix backward(const std::vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dEdf, unsigned i) const;
+        virtual Matrix backward(const std::vector<const Matrix*>& xs,const Matrix& fx,const Matrix& dEdf, unsigned i) const=0;
 
         //number of arguments to the function
         inline unsigned arity() const{return tail.size();}

@@ -9,6 +9,7 @@
 using namespace std;
 
 namespace cnn{
+
     string ParameterLine::to_string(const vector<string>& names)const{
         ostringstream s;
         s<<"params"<<tensor;
@@ -40,4 +41,8 @@ namespace cnn{
                             unsigned i) const {
         return Matrix();
     }
+
+
+
+
 }
