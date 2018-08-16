@@ -31,4 +31,4 @@ cmake-build-debug
 *.exe
 *.out
 *.app
-eigen
+eigen/*
